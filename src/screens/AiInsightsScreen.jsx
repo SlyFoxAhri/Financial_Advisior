@@ -1,3 +1,9 @@
+import React, { useState, useEffect, useRef } from 'react';
+// UPDATED: Import the new API key
+import { geminiApiKey, newsApiKey, twelveDataApiKey } from '../config/apiKeys.js';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import axios from 'axios';
+import { Bot, User, Send, Loader2, FileText, Sparkles, ShieldCheck, SearchCheck } from 'lucide-react';
 
 // Initialize the Google Generative AI client
 const genAI = new GoogleGenerativeAI(geminiApiKey);

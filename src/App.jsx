@@ -8,6 +8,7 @@ import AiInsightsScreen from './screens/AiInsightsScreen.jsx';
 import FinancialNewsScreen from './screens/FinancialNewsScreen.jsx';
 import GoalsScreen from './screens/GoalsScreen.jsx';
 import PredictionScreen from './screens/PredictionScreen.jsx';
+import DarkModeToggle from './components/DarkModeToggle';
 
 function App() {
   const [activeScreen, setActiveScreen] = useState('Dashboard');
@@ -91,6 +92,11 @@ function App() {
                 activeScreen={activeScreen}
                 setActiveScreen={setActiveScreen}
             />
+
+            {/* Dark Mode Toggle Button */}
+            <div className="absolute top-4 right-4">
+                <DarkModeToggle />
+            </div>
 
             {/* Main Content Area */}
             <main className="flex-1 p-4 md:p-8 overflow-y-auto">

@@ -10,7 +10,21 @@ const genAI = new GoogleGenerativeAI(geminiApiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 //Interactive Stock Chart Component
+const StockChart = ({ history, prediction, verdict }) => {
+    const [hoverData, setHoverData] = useState(null);
+    const svgRef = useRef(null);
 
+    if (!history || history.length === 0) return null;
+
+    const allData = [...history];
+    if (prediction && prediction.length > 0) {
+        let lastDate = new Date(history[history.length - 1].date);
+        prediction.forEach((price, index) => {
+            const nextDate = new Date(lastDate);
+            nextDate.setDate(lastDate.getDate() + (index + 1)); 
+            allData.push({ date: nextDate.toISOString().split('T')[0], close: price, isPrediction: true });
+        });
+    }
 
     const isBuy = verdict === 'BUY';
     const isSell = verdict === 'SELL';
@@ -63,22 +77,6 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
             data: allData[index]
         });
     };
-    
-    const StockChart = ({ history, prediction, verdict }) => {
-    const [hoverData, setHoverData] = useState(null);
-    const svgRef = useRef(null);
-
-    if (!history || history.length === 0) return null;
-
-    const allData = [...history];
-    if (prediction && prediction.length > 0) {
-        let lastDate = new Date(history[history.length - 1].date);
-        prediction.forEach((price, index) => {
-            const nextDate = new Date(lastDate);
-            nextDate.setDate(lastDate.getDate() + (index + 1)); 
-            allData.push({ date: nextDate.toISOString().split('T')[0], close: price, isPrediction: true });
-        });
-    }
 
     return (
         <div className="w-full h-80 mt-6 mb-2 relative" onMouseLeave={() => setHoverData(null)}>

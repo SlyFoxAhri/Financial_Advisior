@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-// UPDATED: Import the new API key
+//Import the new API key from config
 import { geminiApiKey, newsApiKey, twelveDataApiKey } from '../config/apiKeys.js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import axios from 'axios';
 import { Bot, User, Send, Loader2, FileText, Sparkles, ShieldCheck, SearchCheck } from 'lucide-react';
 
-// Initialize the Google Generative AI client
+//Initialize the Google Generative AI client
 const genAI = new GoogleGenerativeAI(geminiApiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-// --- Helper function to format AI responses ---
+//Helper function to format AI responses
 const FormattedAiResponse = ({ text }) => {
     const createMarkup = (text) => {
         if (!text) return { __html: '' };
@@ -24,7 +24,7 @@ const FormattedAiResponse = ({ text }) => {
     return <div className="prose prose-sm dark:prose-invert" dangerouslySetInnerHTML={createMarkup(text)} />;
 };
 
-// --- AI Insights Screen Component ---
+//AI Insights Screen Component
 const AiInsightsScreen = () => {
     const [activeTab, setActiveTab] = useState('chat');
     return (
@@ -46,7 +46,7 @@ const AiInsightsScreen = () => {
     );
 };
 
-// --- Sub-Components for each tab ---
+//Sub-Components for each tab
 const TabButton = ({ title, isActive, onClick }) => (
     <button onClick={onClick} className={`py-3 px-6 font-semibold text-lg transition-colors duration-300 ${isActive ? 'border-b-4 border-blue-600 text-blue-600 dark:text-blue-400' : 'text-gray-500 hover:text-blue-600 dark:hover:text-blue-400'}`}>
         {title}
@@ -113,7 +113,7 @@ const ConversationalAdvice = () => {
             }
 
             const newsUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(entities.searchQuery)}&sortBy=relevancy&pageSize=5&apiKey=${newsApiKey}`;
-            // UPDATED: New API endpoint structure for Twelve Data
+            //New API endpoint structure for Twelve Data
             const stockUrl = `https://api.twelvedata.com/quote?symbol=${entities.stockSymbol}&apikey=${twelveDataApiKey}`;
 
             const [newsResponse, stockResponse] = await Promise.all([
@@ -123,7 +123,7 @@ const ConversationalAdvice = () => {
 
             const headlines = newsResponse.data.articles.map(a => a.title);
             const stockData = stockResponse.data;
-            // UPDATED: Parsing the new response structure
+            //Parsing the new response structure
             const price = (stockData && stockData.close) ? stockData.close : 'Not found';
             
             setConversation(prev => [...prev, { role: 'model', text: `Found data for ${entities.stockSymbol}. Now generating analysis...`, isStatus: true }]);
